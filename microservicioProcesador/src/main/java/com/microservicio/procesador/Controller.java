@@ -20,6 +20,10 @@ public class Controller {
     @PostMapping("/procesarArchivo")
     public ResponseEntity<String> procesarArchivo(@RequestBody String rutaArchivo) {
 
+        int numeroRegistrosCorrectos=0;
+        int cantidadRegistros=0;
+
+
         List<String[]> contenido = new ArrayList<>();
 
         // saber que tipo de archivo es por la extencion, si es csv o txt o xls
@@ -82,15 +86,21 @@ public class Controller {
             // ? Recibir la respuesta del servicio validador
             // Maneja la respuesta
             String responseBody = response.getBody().toString();
+
+            cantidadRegistros += 1;
+
+            //?  si la respuesta es ture se cuenta un registro y si es falso no se cuenta el registro
+            if (responseBody.equals("true")) {
+                numeroRegistrosCorrectos += 1;
+            }
+
             System.out.println(responseBody);
 
         }
 
-        return new ResponseEntity<>("El numero de lineas es ", HttpStatus.OK);
+        String mensajeFinal= "El numero de registros correctos es: " + numeroRegistrosCorrectos + " de " + cantidadRegistros + " registros";
+
+        return new ResponseEntity<>(mensajeFinal, HttpStatus.OK);
     }
 
-    @GetMapping("/hola")
-    public String hola() {
-        return "hola";
-    }
 }
