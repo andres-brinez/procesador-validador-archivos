@@ -46,11 +46,11 @@ public class Controller {
         // ? restTemplate para la comunicación con el servicio validador
 
         RestTemplate restTemplate = new RestTemplate();
-        String serviceBUrl = "http://localhost:8081";
+        String serviceBUrl = "http://localhost:8090";
 
         // Crear el cuerpo de la solicitud
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.TEXT_PLAIN);
+        headers.setContentType(MediaType.APPLICATION_JSON);
 
 
         // ? Recorrer cada registro del archivo y enviarlo al servicio validador
@@ -76,8 +76,13 @@ public class Controller {
                     serviceBUrl + "/validador/validarRegistro",
                     HttpMethod.POST,
                     request,
-                    Boolean.class);
+                    Boolean.class
+            );
 
+            // ? Recibir la respuesta del servicio validador
+            // Maneja la respuesta
+            String responseBody = response.getBody().toString();
+            System.out.println(responseBody);
 
         }
 
