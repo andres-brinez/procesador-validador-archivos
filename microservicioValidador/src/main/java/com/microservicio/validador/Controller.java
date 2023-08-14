@@ -1,5 +1,6 @@
 package com.microservicio.validador;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,11 +12,15 @@ import java.util.List;
 @RequestMapping("/validador")
 public class Controller {
 
+    @Autowired
+    Service service;
+
     @PostMapping("/validarRegistro")
     public Boolean validarRegistro(@RequestBody List<String> registro) {
 
         System.out.println(registro);
         System.out.println("validando registro");
-        return true;
+
+        return service.validarRegistro(registro);
     }
 }
