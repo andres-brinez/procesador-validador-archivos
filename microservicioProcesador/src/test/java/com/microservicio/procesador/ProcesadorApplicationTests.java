@@ -1,4 +1,4 @@
-package com.microservicio.procesador;
+package com.microservicio.Procesador;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
