@@ -16,7 +16,6 @@ public class Controller {
     @Autowired
     private Service service;
 
-
     @PostMapping("/procesarArchivo")
     public ResponseEntity<String> procesarArchivo(@RequestBody String rutaArchivo) {
 
@@ -30,6 +29,7 @@ public class Controller {
         String[] partes = rutaArchivo.split("\\.");
         String extension = partes[partes.length - 1];
 
+        //? Verificar extención del archivo
         if (extension.equals("csv")) {
             contenido = service.leerArchivoCSV(rutaArchivo);
             endPoint = "/validador/validarRegistroCSV";
@@ -45,6 +45,12 @@ public class Controller {
 
             // responder con un response entity
             String mensajeError = "Error: El archivo no es de tipo CSV  o XLS";
+            return new ResponseEntity<>(mensajeError, HttpStatus.BAD_REQUEST);
+        }
+
+        // Validar si hubo un error porque no existe el archivo
+        if (contenido == null) {
+            String mensajeError = "Error: El archivo no existe";
             return new ResponseEntity<>(mensajeError, HttpStatus.BAD_REQUEST);
         }
 
