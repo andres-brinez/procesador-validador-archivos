@@ -69,6 +69,7 @@ public class Service {
 
             System.out.println("Error al leer el archivo: " + e.getMessage());
             e.printStackTrace();
+            return null;
             // Manejo de error en caso de no poder leer el archivo
 
         }
@@ -121,6 +122,8 @@ public class Service {
             archivo.close();
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
+
         }
 
         // devuelve una lista de arreglos de string donde cada arreglo es una fila del archivo
@@ -128,6 +131,7 @@ public class Service {
     }
 
 
+    // Hace la conexion con el  Microservicio validador
     // Devuelve una lista con el numero de registros correctos y la cantidad de registros
     public List<Integer> restTemplate(List<String[]> contenido,String endPoint) {
 
