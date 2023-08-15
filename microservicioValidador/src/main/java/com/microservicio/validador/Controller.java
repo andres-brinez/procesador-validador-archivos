@@ -18,6 +18,11 @@ public class Controller {
     @PostMapping("/validarRegistroCSV")
     public Boolean validarRegistro(@RequestBody List<String> registro) {
 
-        return service.validarRegistro(registro);
+        return service.validarRegistroCSV(registro);
+    }
+
+    @PostMapping("/validarRegistroXLSX")
+    public Boolean validarRegistroXLSX(@RequestBody List<String> registro) {
+        return service.validarRegistroXLSX(registro);
     }
 }
