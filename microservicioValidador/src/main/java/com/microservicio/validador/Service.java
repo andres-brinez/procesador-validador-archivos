@@ -5,7 +5,7 @@ import java.util.List;
 @org.springframework.stereotype.Service
 public class Service {
 
-    public Boolean validarRegistro(List<String> registro) {
+    public Boolean validarRegistroCSV(List<String> registro) {
 
         Boolean respuesta= true;
 
@@ -24,7 +24,6 @@ public class Service {
             String date = registro.get(7);
             String jobTitle = registro.get(8);
             String[] jobTitles = {"Haematologist", "Phytotherapist", "Building surveyor", "Insurance account manager", "Educational psychologist"};
-
             LocalDate dateFormat = LocalDate.parse(date); // pasar el string a formato date
 
             // Validar email que tenga la estructura correcta
@@ -53,5 +52,33 @@ public class Service {
         }
 
         return respuesta;
+    }
+
+    public Boolean validarRegistroXLSX(List<String> registro) {
+
+        Boolean respuesta= true;
+        String[] reportTypes = {"Near Miss", "Lost Time", "First Aid"};
+
+        String injuryLocation=registro.get(1);
+        String reportType=registro.get(7);
+
+        if (injuryLocation.equals("N/A")) {
+            respuesta = false;
+            System.out.println("Injury Location no valida " + injuryLocation);
+        }
+
+        boolean isValidReport = false;
+        for (String report : reportTypes) { // recorrer el arreglo
+            if (reportType.equals(report)) { // si el reportType es igual a alguno de los reportTypes del arreglo
+                isValidReport = true;
+                System.out.println("Report Type valido " + reportType);
+                break;
+            }
+
+            respuesta= isValidReport;
+        }
+
+        return respuesta;
+
     }
 }
