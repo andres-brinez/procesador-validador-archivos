@@ -24,7 +24,6 @@ public class Controller {
         int cantidadRegistros=0;
         String endPoint;
 
-
         List<String[]> contenido = new ArrayList<>();
 
         // saber que tipo de archivo es por la extencion, si es csv o txt o xls
@@ -36,7 +35,7 @@ public class Controller {
             endPoint = "/validador/validarRegistroCSV";
         }
         else if (extension.equals("xlsx")) {
-            //contenido = service.leerArchivoTXT(rutaArchivo);
+            contenido = service.leerArchivoXLSX(rutaArchivo);
             endPoint = "/validador/validarRegistroXLSX";
         }
 //        else if (extension.equals("txt")) {
@@ -49,57 +48,18 @@ public class Controller {
             return new ResponseEntity<>(mensajeError, HttpStatus.BAD_REQUEST);
         }
 
+        // Enviar los registros al servicio que lo envia por medio de resTemplate al microseServicio validador
+        List<Integer> informacionRegistros = new ArrayList<>();
+        informacionRegistros=service.restTemplate(contenido, endPoint);
 
-        // ? restTemplate para la comunicación con el servicio validador
+        // Obtener la respuesta del servicio validador
+        cantidadRegistros= informacionRegistros.get(0);
+        numeroRegistrosCorrectos= informacionRegistros.get(1);
 
-        RestTemplate restTemplate = new RestTemplate();
-        String serviceBUrl = "http://localhost:8090";
-
-        // Crear el cuerpo de la solicitud
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        // ? Recorrer cada registro del archivo y enviarlo al servicio validador
-
-        // iterar por cad reigstro que hay en el contenido
-        for (String[] registro : contenido) {
-            // devuelve  la representación por defecto del objeto String en Java
-
-            List<String> registroList = new ArrayList<>(); // cada vez que hay un registro se crea una lista que guarda los valores
-
-            // obtener cada elemento de registro y se agrega a una lista que contiene los elementos de registro de una manera que se pueda enviar al servicio validador
-            for (String valor : registro) {
-                registroList.add(valor);         // registroList devuelve algo asi: [Index, User Id, First Name, Last Name, Sex, Email, Phone, Date of birth, Job Title]
-
-            }
-
-            // ? Enviar el registro al servicio validador por cada registro
-
-            HttpEntity<List<String>> request = new HttpEntity<>(registroList, headers); // crea una entidad http que contiene el registroList y los headers
-
-            // Enviar la solicitud al servicio validador
-            ResponseEntity<Boolean> response = restTemplate.exchange(
-                    serviceBUrl + endPoint,
-                    HttpMethod.POST,
-                    request,
-                    Boolean.class
-            );
-
-            // ? Recibir la respuesta del servicio validador
-            // Maneja la respuesta
-            String responseBody = response.getBody().toString();
-            cantidadRegistros += 1;
-
-            //?  si la respuesta es ture se cuenta un registro y si es falso no se cuenta el registro
-            if (responseBody.equals("true")) {
-                numeroRegistrosCorrectos += 1;
-            }
-
-        }
 
         String mensajeFinal= "El numero de registros correctos es: " + numeroRegistrosCorrectos + " de " + cantidadRegistros + " registros";
-
         return new ResponseEntity<>(mensajeFinal, HttpStatus.OK);
+
     }
 
 }
