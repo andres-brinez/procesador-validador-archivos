@@ -15,11 +15,8 @@ public class Controller {
     @Autowired
     Service service;
 
-    @PostMapping("/validarRegistro")
+    @PostMapping("/validarRegistroCSV")
     public Boolean validarRegistro(@RequestBody List<String> registro) {
-
-        System.out.println(registro);
-        System.out.println("validando registro");
 
         return service.validarRegistro(registro);
     }
