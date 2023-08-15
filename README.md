@@ -20,6 +20,13 @@ El microservicio "Procesador" carga (URL) y lee archivos en los formatos CSV y E
 
 - `POST /procesar`: Recibe un la url y su tipo (CSV o Excel) en el cuerpo de la solicitud. Procesa el archivo y devuelve el resultado de la validación.
 
+  ![image](https://github.com/andres-brinez/procesador-validador-archivos/assets/94869227/b83ac1a7-0f6a-4229-a7e7-c53db0beef99)
+  ![image](https://github.com/andres-brinez/procesador-validador-archivos/assets/94869227/881b18f1-c9ac-4d85-b4b4-f383a1e478b0)
+  ![image](https://github.com/andres-brinez/procesador-validador-archivos/assets/94869227/86799c03-a2a1-44f3-9bbb-8edd76a45adb)
+
+
+  
+
 ## Microservicio "Validador"
 
 El microservicio "Validador" realiza las validaciones específicas para cada formato de archivo. Evalúa campos como correo electrónico, fecha de nacimiento, título de trabajo, ubicación de lesión y tipo de informe.
