@@ -3,6 +3,8 @@
 
 ## Microservicios para Validación y Procesamiento de Archivos
 
+<a href="./enunciado.pdf">  Enunciado del proyecto </a>
+
 Este proyecto es una implementación de ejemplo de dos microservicios que se encargan de procesar y  validar   archivos en formatos CSV y Excel. Los microservicios están desarrollados en Spring Boot y se comunican entre sí mediante RestTemplate.
 
 Este proyecto consta de dos microservicios: uno encargado del procesamiento de archivos y otro encargado de la validación de los registros en esos archivos. Los microservicios se comunican entre sí mediante RESTful API utilizando RestTemplate
