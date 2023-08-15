@@ -22,6 +22,7 @@ public class Controller {
 
         int numeroRegistrosCorrectos=0;
         int cantidadRegistros=0;
+        String endPoint;
 
 
         List<String[]> contenido = new ArrayList<>();
@@ -32,8 +33,11 @@ public class Controller {
 
         if (extension.equals("csv")) {
             contenido = service.leerArchivoCSV(rutaArchivo);
+            endPoint = "/validador/validarRegistroCSV";
         }
-        else if (extension.equals("txt")) {
+        else if (extension.equals("xlsx")) {
+            //contenido = service.leerArchivoTXT(rutaArchivo);
+            endPoint = "/validador/validarRegistroXLSX";
         }
 //        else if (extension.equals("txt")) {
 //            archivo.setTipoArchivo("xls");
@@ -41,7 +45,6 @@ public class Controller {
         else {
 
             // responder con un response entity
-
             String mensajeError = "Error: El archivo no es de tipo CSV  o XLS";
             return new ResponseEntity<>(mensajeError, HttpStatus.BAD_REQUEST);
         }
@@ -55,7 +58,6 @@ public class Controller {
         // Crear el cuerpo de la solicitud
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-
 
         // ? Recorrer cada registro del archivo y enviarlo al servicio validador
 
@@ -71,13 +73,13 @@ public class Controller {
 
             }
 
-            // ? Enviar el registro al servicio validador
+            // ? Enviar el registro al servicio validador por cada registro
 
             HttpEntity<List<String>> request = new HttpEntity<>(registroList, headers); // crea una entidad http que contiene el registroList y los headers
 
             // Enviar la solicitud al servicio validador
             ResponseEntity<Boolean> response = restTemplate.exchange(
-                    serviceBUrl + "/validador/validarRegistro",
+                    serviceBUrl + endPoint,
                     HttpMethod.POST,
                     request,
                     Boolean.class
@@ -86,15 +88,12 @@ public class Controller {
             // ? Recibir la respuesta del servicio validador
             // Maneja la respuesta
             String responseBody = response.getBody().toString();
-
             cantidadRegistros += 1;
 
             //?  si la respuesta es ture se cuenta un registro y si es falso no se cuenta el registro
             if (responseBody.equals("true")) {
                 numeroRegistrosCorrectos += 1;
             }
-
-            System.out.println(responseBody);
 
         }
 
